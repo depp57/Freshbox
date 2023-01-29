@@ -1,0 +1,47 @@
+{
+  "name": "backend-orders",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/orders/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend/orders",
+        "main": "apps/backend/orders/src/main.ts",
+        "tsConfig": "apps/backend/orders/tsconfig.app.json",
+        "assets": ["apps/backend/orders/src/assets"],
+        "webpackConfig": "apps/backend/orders/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "backend-orders:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "backend-orders:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/backend/orders/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

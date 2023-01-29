@@ -1,0 +1,47 @@
+{
+  "name": "backend-payment",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/payment/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend/payment",
+        "main": "apps/backend/payment/src/main.ts",
+        "tsConfig": "apps/backend/payment/tsconfig.app.json",
+        "assets": ["apps/backend/payment/src/assets"],
+        "webpackConfig": "apps/backend/payment/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "backend-payment:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "backend-payment:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/backend/payment/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
