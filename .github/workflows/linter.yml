@@ -1,0 +1,21 @@
+name: Lint all codebase
+run-name: Lint branch ${{ github.head_ref }}
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Lint all Codebase
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install and cache dependencies (need eslint and nx plugins)
+        uses: bahmutov/npm-install@v1
+
+      - name: Run eslint on all codebase
+        run: cd ${{ github.workspace }} && npm run lint
