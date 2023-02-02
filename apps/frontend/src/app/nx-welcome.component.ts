@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ITestDto, Message } from '@freshbox/api-data';
 
-/* eslint-disable */
-
 @Component({
   selector: 'freshbox-nx-welcome',
   template: `
