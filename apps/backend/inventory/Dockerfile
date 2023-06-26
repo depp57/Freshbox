@@ -1,5 +1,8 @@
 # Build the docker image with `npx nx docker-build backend-orders`.
 # Tip: Modify "docker-build" options in project.json to change docker build args.
+
+# No need for "multi-stage build" because the "npx nx docker-build app" command already builds the application
+# and places the build in dist/apps/backend/app
 FROM node:18-alpine
 
 ENV PORT=3000
