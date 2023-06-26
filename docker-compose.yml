@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  api-gateway:
+    image: frontend
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - api-gateway
+    volumes:
+      - ./infra/api-gateway/ssl/freshbox.crt:/etc/ssl/certs/freshbox.crt
+      - ./infra/api-gateway/ssl/freshbox.key:/etc/ssl/private/freshbox.key
+
+  api-payment:
+    image: api-payment
+    restart: unless-stopped
+    networks:
+      - api-gateway
+
+  api-users:
+    image: api-users
+    restart: unless-stopped
+    networks:
+      - api-gateway
+
+  api-inventory:
+    image: api-inventory
+    restart: unless-stopped
+    networks:
+      - api-gateway
+
+  api-orders:
+    image: api-orders
+    restart: unless-stopped
+    networks:
+      - api-gateway
+
+networks:
+  api-gateway:
+    driver: "bridge"

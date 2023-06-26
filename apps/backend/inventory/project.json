@@ -14,7 +14,8 @@
         "main": "apps/backend/inventory/src/main.ts",
         "tsConfig": "apps/backend/inventory/tsconfig.app.json",
         "assets": ["apps/backend/inventory/src/assets"],
-        "webpackConfig": "apps/backend/inventory/webpack.config.js"
+        "webpackConfig": "apps/backend/inventory/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -41,6 +42,10 @@
       "options": {
         "lintFilePatterns": ["apps/backend/inventory/**/*.ts"]
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/inventory/Dockerfile . -t api-inventory"
     }
   },
   "tags": []

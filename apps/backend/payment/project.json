@@ -14,7 +14,8 @@
         "main": "apps/backend/payment/src/main.ts",
         "tsConfig": "apps/backend/payment/tsconfig.app.json",
         "assets": ["apps/backend/payment/src/assets"],
-        "webpackConfig": "apps/backend/payment/webpack.config.js"
+        "webpackConfig": "apps/backend/payment/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -41,6 +42,10 @@
       "options": {
         "lintFilePatterns": ["apps/backend/payment/**/*.ts"]
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/payment/Dockerfile . -t api-payment"
     }
   },
   "tags": []

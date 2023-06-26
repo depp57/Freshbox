@@ -25,18 +25,13 @@ async function bootstrap() {
 
   app.disable('x-powered-by'); // don't expose the backend server for security reason
 
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   setupSwagger(app);
 
   const port = process.env.PORT || 3003;
   await app.listen(port);
 
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
 bootstrap();

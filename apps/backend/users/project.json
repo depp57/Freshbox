@@ -14,7 +14,8 @@
         "main": "apps/backend/users/src/main.ts",
         "tsConfig": "apps/backend/users/tsconfig.app.json",
         "assets": ["apps/backend/users/src/assets"],
-        "webpackConfig": "apps/backend/users/webpack.config.js"
+        "webpackConfig": "apps/backend/users/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -41,6 +42,10 @@
       "options": {
         "lintFilePatterns": ["apps/backend/users/**/*.ts"]
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/backend/users/Dockerfile . -t api-users"
     }
   },
   "tags": []

@@ -32,3 +32,5 @@ testem.log
 Thumbs.db
 
 .angular
+
+infra/api-gateway/ssl/*
