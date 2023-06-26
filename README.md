@@ -57,6 +57,20 @@ computer science student.
 
 I explained my choices whenever I thought it is interesting.
 
+## Explanation of the choices I made
+
+### Security
+
+#### 1. SSL encryption using HTTPS between the client and the API-gateway
+
+HTTPS is crucial for secure communication between clients and web apps. The main advantages it procures is **encryption of the data transmitted between the client's web browser
+and the web app** and **authentication of the identity of the web app server**.
+
+I opted for a [self-signed SSL certificate](https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl)
+to encrypt the communication between the web application and the user. However, it's important to note that **self-signed certificates are not suitable
+for production environments**. To enhance security, I recommend using a trusted SSL certificate from a certificate authority like [Let's Encrypt](https://letsencrypt.org/),
+which offers free certificates. Then, you can use a tool like [Certbot](https://certbot.eff.org/) to automatically renew your certificate.
+
 ### Clean code
 
 I love the [Software craftmanship](https://en.wikipedia.org/wiki/Software_craftsmanship) approach of coding.
