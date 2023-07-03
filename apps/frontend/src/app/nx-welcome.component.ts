@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ITestDto, Message } from '@freshbox/api-data';
+import { environment } from '../environments/environment.production';
 
 @Component({
   selector: 'freshbox-nx-welcome',
@@ -840,6 +841,7 @@ nx affected:e2e</pre>
         </p>
       </div>
     </div>
+    <p>Current environment is : {{ environment.ENV }}</p>
     <p style="text-align: center">
       {{ backendResponse | async }}
     </p>
@@ -867,4 +869,6 @@ export class NxWelcomeComponent {
       .post<Message>('http://localhost:3001/api', body)
       .pipe(map((m) => m.message));
   }
+
+  protected readonly environment = environment;
 }
