@@ -1,11 +1,18 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ViewEncapsulation,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { ITestDto, Message } from '@freshbox/api-data';
 import { environment } from '../environments/environment.production';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'freshbox-nx-welcome',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!--
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -25,17 +32,20 @@ import { environment } from '../environments/environment.production';
         tab-size: 4;
         scroll-behavior: smooth;
       }
+
       body {
         font-family: inherit;
         line-height: inherit;
         margin: 0;
       }
+
       h1,
       h2,
       p,
       pre {
         margin: 0;
       }
+
       *,
       ::before,
       ::after {
@@ -44,19 +54,23 @@ import { environment } from '../environments/environment.production';
         border-style: solid;
         border-color: currentColor;
       }
+
       h1,
       h2 {
         font-size: inherit;
         font-weight: inherit;
       }
+
       a {
         color: inherit;
         text-decoration: inherit;
       }
+
       pre {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           'Liberation Mono', 'Courier New', monospace;
       }
+
       svg {
         display: block;
         vertical-align: middle;
@@ -66,6 +80,7 @@ import { environment } from '../environments/environment.production';
         shape-rendering: auto;
         text-rendering: optimizeLegibility;
       }
+
       pre {
         background-color: rgba(55, 65, 81, 1);
         border-radius: 0.25rem;
@@ -80,6 +95,7 @@ import { environment } from '../environments/environment.production';
         box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1),
           0 4px 6px -2px rgba(0, 0, 0, 0.05);
       }
+
       .rounded {
         border-radius: 1.5rem;
       }
@@ -87,6 +103,7 @@ import { environment } from '../environments/environment.production';
       .wrapper {
         width: 100%;
       }
+
       .container {
         margin-left: auto;
         margin-right: auto;
@@ -97,15 +114,18 @@ import { environment } from '../environments/environment.production';
         color: rgba(55, 65, 81, 1);
         width: 100%;
       }
+
       #welcome {
         margin-top: 2.5rem;
       }
+
       #welcome h1 {
         font-size: 3rem;
         font-weight: 500;
         letter-spacing: -0.025em;
         line-height: 1;
       }
+
       #welcome span {
         display: block;
         font-size: 1.875rem;
@@ -113,6 +133,7 @@ import { environment } from '../environments/environment.production';
         line-height: 2.25rem;
         margin-bottom: 0.5rem;
       }
+
       #hero {
         align-items: center;
         background-color: hsla(214, 62%, 21%, 1);
@@ -123,15 +144,18 @@ import { environment } from '../environments/environment.production';
         grid-template-columns: 1fr;
         margin-top: 3.5rem;
       }
+
       #hero .text-container {
         color: rgba(255, 255, 255, 1);
         padding: 3rem 2rem;
       }
+
       #hero .text-container h2 {
         font-size: 1.5rem;
         line-height: 2rem;
         position: relative;
       }
+
       #hero .text-container h2 svg {
         color: hsla(162, 47%, 50%, 1);
         height: 2rem;
@@ -140,9 +164,11 @@ import { environment } from '../environments/environment.production';
         top: 0;
         width: 2rem;
       }
+
       #hero .text-container h2 span {
         margin-left: 2.5rem;
       }
+
       #hero .text-container a {
         background-color: rgba(255, 255, 255, 1);
         border-radius: 0.75rem;
@@ -152,12 +178,14 @@ import { environment } from '../environments/environment.production';
         padding: 1rem 2rem;
         text-decoration: inherit;
       }
+
       #hero .logo-container {
         display: none;
         justify-content: center;
         padding-left: 2rem;
         padding-right: 2rem;
       }
+
       #hero .logo-container svg {
         color: rgba(255, 255, 255, 1);
         width: 66.666667%;
@@ -174,6 +202,7 @@ import { environment } from '../environments/environment.production';
       #learning-materials {
         padding: 2.5rem 2rem;
       }
+
       #learning-materials h2 {
         font-weight: 500;
         font-size: 1.25rem;
@@ -182,6 +211,7 @@ import { environment } from '../environments/environment.production';
         padding-left: 1rem;
         padding-right: 1rem;
       }
+
       .list-item-link {
         align-items: center;
         border-radius: 0.75rem;
@@ -195,6 +225,7 @@ import { environment } from '../environments/environment.production';
         transition-duration: 150ms;
         width: 100%;
       }
+
       .list-item-link svg:first-child {
         margin-right: 1rem;
         height: 1.5rem;
@@ -205,6 +236,7 @@ import { environment } from '../environments/environment.production';
         transition-duration: 150ms;
         width: 1.5rem;
       }
+
       .list-item-link > span {
         flex-grow: 1;
         font-weight: 400;
@@ -214,6 +246,7 @@ import { environment } from '../environments/environment.production';
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
       }
+
       .list-item-link > span > span {
         color: rgba(107, 114, 128, 1);
         display: block;
@@ -227,6 +260,7 @@ import { environment } from '../environments/environment.production';
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
       }
+
       .list-item-link svg:last-child {
         height: 1rem;
         transition-property: all;
@@ -234,21 +268,26 @@ import { environment } from '../environments/environment.production';
         transition-duration: 150ms;
         width: 1rem;
       }
+
       .list-item-link:hover {
         color: rgba(255, 255, 255, 1);
         background-color: hsla(162, 47%, 50%, 1);
       }
+
       .list-item-link:hover > span {
       }
+
       .list-item-link:hover > span > span {
         color: rgba(243, 244, 246, 1);
       }
+
       .list-item-link:hover svg:last-child {
         transform: translateX(0.25rem);
       }
 
       #other-links {
       }
+
       .button-pill {
         padding: 1.5rem 2rem;
         transition-duration: 300ms;
@@ -259,6 +298,7 @@ import { environment } from '../environments/environment.production';
         align-items: center;
         display: flex;
       }
+
       .button-pill svg {
         transition-property: background-color, border-color, color, fill, stroke,
           opacity, box-shadow, transform, filter, backdrop-filter,
@@ -268,6 +308,7 @@ import { environment } from '../environments/environment.production';
         flex-shrink: 0;
         width: 3rem;
       }
+
       .button-pill > span {
         letter-spacing: -0.025em;
         font-weight: 400;
@@ -276,19 +317,23 @@ import { environment } from '../environments/environment.production';
         padding-left: 1rem;
         padding-right: 1rem;
       }
+
       .button-pill span span {
         display: block;
         font-size: 0.875rem;
         font-weight: 300;
         line-height: 1.25rem;
       }
+
       .button-pill:hover svg,
       .button-pill:hover {
         color: rgba(255, 255, 255, 1) !important;
       }
+
       #nx-console:hover {
         background-color: rgba(0, 122, 204, 1);
       }
+
       #nx-console svg {
         color: rgba(0, 122, 204, 1);
       }
@@ -296,6 +341,7 @@ import { environment } from '../environments/environment.production';
       #nx-repo:hover {
         background-color: rgba(24, 23, 23, 1);
       }
+
       #nx-repo svg {
         color: rgba(24, 23, 23, 1);
       }
@@ -305,15 +351,18 @@ import { environment } from '../environments/environment.production';
         margin-top: 2rem;
         padding: 2.5rem 2rem;
       }
+
       #nx-cloud > div {
         align-items: center;
         display: flex;
       }
+
       #nx-cloud > div svg {
         border-radius: 0.375rem;
         flex-shrink: 0;
         width: 3rem;
       }
+
       #nx-cloud > div h2 {
         font-size: 1.125rem;
         font-weight: 400;
@@ -322,20 +371,24 @@ import { environment } from '../environments/environment.production';
         padding-left: 1rem;
         padding-right: 1rem;
       }
+
       #nx-cloud > div h2 span {
         display: block;
         font-size: 0.875rem;
         font-weight: 300;
         line-height: 1.25rem;
       }
+
       #nx-cloud p {
         font-size: 1rem;
         line-height: 1.5rem;
         margin-top: 1rem;
       }
+
       #nx-cloud pre {
         margin-top: 1rem;
       }
+
       #nx-cloud a {
         color: rgba(107, 114, 128, 1);
         display: block;
@@ -344,6 +397,7 @@ import { environment } from '../environments/environment.production';
         margin-top: 1.5rem;
         text-align: right;
       }
+
       #nx-cloud a:hover {
         text-decoration: underline;
       }
@@ -353,6 +407,7 @@ import { environment } from '../environments/environment.production';
 
         margin-top: 3.5rem;
       }
+
       #commands h2 {
         font-size: 1.25rem;
         font-weight: 400;
@@ -361,6 +416,7 @@ import { environment } from '../environments/environment.production';
         padding-left: 1rem;
         padding-right: 1rem;
       }
+
       #commands p {
         font-size: 1rem;
         font-weight: 300;
@@ -369,6 +425,7 @@ import { environment } from '../environments/environment.production';
         padding-left: 1rem;
         padding-right: 1rem;
       }
+
       details {
         align-items: center;
         display: flex;
@@ -377,9 +434,11 @@ import { environment } from '../environments/environment.production';
         padding-right: 1rem;
         width: 100%;
       }
+
       details pre > span {
         color: rgba(181, 181, 181, 1);
       }
+
       summary {
         border-radius: 0.5rem;
         display: flex;
@@ -392,9 +451,11 @@ import { environment } from '../environments/environment.production';
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
       }
+
       summary:hover {
         background-color: rgba(243, 244, 246, 1);
       }
+
       summary svg {
         height: 1.5rem;
         margin-right: 1rem;
@@ -409,6 +470,7 @@ import { environment } from '../environments/environment.production';
         opacity: 0.6;
         text-align: center;
       }
+
       #love svg {
         color: rgba(252, 165, 165, 1);
         width: 1.25rem;
@@ -421,9 +483,11 @@ import { environment } from '../environments/environment.production';
         #hero {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
         #hero .logo-container {
           display: flex;
         }
+
         #middle-content {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -851,6 +915,7 @@ nx affected:e2e</pre>
   `,
   styles: [],
   encapsulation: ViewEncapsulation.None,
+  imports: [CommonModule],
 })
 export class NxWelcomeComponent {
   backendResponse: Observable<string>;
