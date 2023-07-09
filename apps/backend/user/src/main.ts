@@ -7,14 +7,14 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 const setupSwagger = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Orders')
-    .setDescription('The orders API description')
+    .setTitle('User')
+    .setDescription('The user API description')
     .setVersion('0.0.1')
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, swaggerDocument, {
-    customSiteTitle: 'Orders API',
+    customSiteTitle: 'User API',
   });
 };
 
@@ -28,7 +28,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   setupSwagger(app);
 
-  const port = process.env.PORT || 3001;
+  const port = process.env.PORT || 3000;
   await app.listen(port);
 
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);

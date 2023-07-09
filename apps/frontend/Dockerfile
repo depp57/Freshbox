@@ -1,4 +1,4 @@
-# Build the docker image with `npx nx docker-build backend-orders`.
+# Build the docker image with `npx nx docker-build backend-order`.
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 FROM nginx:1.25-alpine3.17
 

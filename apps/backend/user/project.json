@@ -1,7 +1,7 @@
 {
-  "name": "backend-inventory",
+  "name": "backend-user",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/backend/inventory/src",
+  "sourceRoot": "apps/backend/user/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,11 +10,11 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/backend/inventory",
-        "main": "apps/backend/inventory/src/main.ts",
-        "tsConfig": "apps/backend/inventory/tsconfig.app.json",
-        "assets": ["apps/backend/inventory/src/assets"],
-        "webpackConfig": "apps/backend/inventory/webpack.config.js",
+        "outputPath": "dist/apps/backend/user",
+        "main": "apps/backend/user/src/main.ts",
+        "tsConfig": "apps/backend/user/tsconfig.app.json",
+        "assets": ["apps/backend/user/src/assets"],
+        "webpackConfig": "apps/backend/user/webpack.config.js",
         "generatePackageJson": true
       },
       "configurations": {
@@ -28,11 +28,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "backend-inventory:build"
+        "buildTarget": "backend-user:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "backend-inventory:build:production"
+          "buildTarget": "backend-user:build:production"
         }
       }
     },
@@ -40,12 +40,12 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/backend/inventory/**/*.ts"]
+        "lintFilePatterns": ["apps/backend/user/**/*.ts"]
       }
     },
     "docker-build": {
       "dependsOn": ["build"],
-      "command": "docker build -f apps/backend/inventory/Dockerfile . -t api-inventory"
+      "command": "docker build -f apps/backend/user/Dockerfile . -t api-user"
     }
   },
   "tags": []

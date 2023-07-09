@@ -7,14 +7,14 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 const setupSwagger = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Inventory')
-    .setDescription('The restaurant inventory API description')
+    .setTitle('Restaurant')
+    .setDescription('The restaurant API description')
     .setVersion('0.0.1')
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('doc', app, swaggerDocument, {
-    customSiteTitle: 'Inventory API',
+    customSiteTitle: 'Restaurant API',
   });
 };
 

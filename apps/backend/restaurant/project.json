@@ -1,7 +1,7 @@
 {
-  "name": "backend-users",
+  "name": "backend-restaurant",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/backend/users/src",
+  "sourceRoot": "apps/backend/restaurant/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,11 +10,11 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/backend/users",
-        "main": "apps/backend/users/src/main.ts",
-        "tsConfig": "apps/backend/users/tsconfig.app.json",
-        "assets": ["apps/backend/users/src/assets"],
-        "webpackConfig": "apps/backend/users/webpack.config.js",
+        "outputPath": "dist/apps/backend/restaurant",
+        "main": "apps/backend/restaurant/src/main.ts",
+        "tsConfig": "apps/backend/restaurant/tsconfig.app.json",
+        "assets": ["apps/backend/restaurant/src/assets"],
+        "webpackConfig": "apps/backend/restaurant/webpack.config.js",
         "generatePackageJson": true
       },
       "configurations": {
@@ -28,11 +28,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "backend-users:build"
+        "buildTarget": "backend-restaurant:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "backend-users:build:production"
+          "buildTarget": "backend-restaurant:build:production"
         }
       }
     },
@@ -40,12 +40,12 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/backend/users/**/*.ts"]
+        "lintFilePatterns": ["apps/backend/restaurant/**/*.ts"]
       }
     },
     "docker-build": {
       "dependsOn": ["build"],
-      "command": "docker build -f apps/backend/users/Dockerfile . -t api-users"
+      "command": "docker build -f apps/backend/restaurant/Dockerfile . -t api-restaurant"
     }
   },
   "tags": []

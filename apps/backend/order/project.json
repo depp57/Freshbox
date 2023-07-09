@@ -1,7 +1,7 @@
 {
-  "name": "backend-orders",
+  "name": "backend-order",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/backend/orders/src",
+  "sourceRoot": "apps/backend/order/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,11 +10,11 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/backend/orders",
-        "main": "apps/backend/orders/src/main.ts",
-        "tsConfig": "apps/backend/orders/tsconfig.app.json",
-        "assets": ["apps/backend/orders/src/assets"],
-        "webpackConfig": "apps/backend/orders/webpack.config.js",
+        "outputPath": "dist/apps/backend/order",
+        "main": "apps/backend/order/src/main.ts",
+        "tsConfig": "apps/backend/order/tsconfig.app.json",
+        "assets": ["apps/backend/order/src/assets"],
+        "webpackConfig": "apps/backend/order/webpack.config.js",
         "generatePackageJson": true
       },
       "configurations": {
@@ -28,11 +28,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "backend-orders:build"
+        "buildTarget": "backend-order:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "backend-orders:build:production"
+          "buildTarget": "backend-order:build:production"
         }
       }
     },
@@ -40,12 +40,12 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/backend/orders/**/*.ts"]
+        "lintFilePatterns": ["apps/backend/order/**/*.ts"]
       }
     },
     "docker-build": {
       "dependsOn": ["build"],
-      "command": "docker build -f apps/backend/orders/Dockerfile . -t api-orders"
+      "command": "docker build -f apps/backend/order/Dockerfile . -t api-order"
     }
   },
   "tags": []

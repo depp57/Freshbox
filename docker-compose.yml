@@ -19,20 +19,20 @@ services:
     networks:
       - api-gateway
 
-  api-users:
-    image: api-users
+  api-user:
+    image: api-user
     restart: unless-stopped
     networks:
       - api-gateway
 
-  api-inventory:
-    image: api-inventory
+  api-restaurant:
+    image: api-restaurant
     restart: unless-stopped
     networks:
       - api-gateway
 
-  api-orders:
-    image: api-orders
+  api-order:
+    image: api-order
     restart: unless-stopped
     networks:
       - api-gateway
