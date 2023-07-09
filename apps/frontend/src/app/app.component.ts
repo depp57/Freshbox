@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'freshbox-root',
@@ -7,6 +7,6 @@ import { NxWelcomeComponent } from './nx-welcome.component';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NxWelcomeComponent],
+  imports: [RouterOutlet],
 })
 export class AppComponent {}

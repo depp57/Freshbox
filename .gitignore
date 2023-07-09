@@ -34,3 +34,5 @@ Thumbs.db
 .angular
 
 infra/api-gateway/ssl/*
+
+apps/frontend/src/environments/*
