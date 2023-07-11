@@ -8,11 +8,36 @@ import {
   withPreloading,
 } from '@angular/router';
 import { appRoutes } from './app/pages/routes';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
+
+function initKeycloak(keycloak: KeycloakService): () => Promise<boolean> {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'https://localhost:8443',
+        realm: 'freshbox',
+        clientId: 'freshbox',
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html',
+      },
+    });
+}
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(withJsonpSupport()),
     provideAnimations(),
     provideRouter(appRoutes, withPreloading(PreloadAllModules)),
+    importProvidersFrom(KeycloakAngularModule),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initKeycloak,
+      multi: true,
+      deps: [KeycloakService],
+    },
   ],
 }).catch((error) => console.error(error));

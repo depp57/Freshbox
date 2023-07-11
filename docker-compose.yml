@@ -1,17 +1,74 @@
 version: "3.8"
 
 services:
+  auth-database:
+    image: postgres:15.3-alpine3.18
+    volumes:
+      - auth_database:/var/lib/postgresql/data
+    networks:
+      - keycloak
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1m
+      timeout: 5s
+      start_period: 30s
+
+  auth:
+    build: ./infra/keycloak # Custom optimized Keycloak Dockerfile https://www.keycloak.org/server/containers
+    restart: unless-stopped
+    command:
+      - start
+    volumes:
+      - keycloak_conf:/opt/keycloak/data/import/realm.json
+      - ./infra/ssl-keys/:/opt/keycloak/ssl-keys
+    networks:
+      - keycloak
+    ports:
+      - "8443:8443"
+    depends_on:
+      auth-database:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL_HOST: auth-database
+      KC_DB_USERNAME: keycloak
+      KC_DB_DATABASE: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_HOSTNAME_ADMIN_URL: https://localhost:8443
+      KC_HOSTNAME_URL: https://localhost:8443
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl-keys/freshbox.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl-keys/freshbox.key
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "${BASE_URL}:8443" ]
+      interval: 1m
+      timeout: 5s
+      start_period: 30s
+
+
   api-gateway:
     image: frontend
     restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
+    volumes:
+      - ./infra/ssl-keys/freshbox.crt:/etc/ssl/certs/freshbox.crt
+      - ./infra/ssl-keys/freshbox.key:/etc/ssl/private/freshbox.key
     networks:
       - api-gateway
-    volumes:
-      - ./infra/api-gateway/ssl/freshbox.crt:/etc/ssl/certs/freshbox.crt
-      - ./infra/api-gateway/ssl/freshbox.key:/etc/ssl/private/freshbox.key
+    ports:
+      - "80:80"
+      - "443:443"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "${BASE_URL}:80"]
+      interval: 1m
+      timeout: 5s
+      start_period: 10s
+
 
   api-payment:
     image: api-payment
@@ -37,6 +94,12 @@ services:
     networks:
       - api-gateway
 
+volumes:
+  keycloak_conf:
+  auth_database:
+
 networks:
   api-gateway:
+    driver: "bridge"
+  keycloak:
     driver: "bridge"
