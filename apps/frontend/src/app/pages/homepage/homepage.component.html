@@ -5,8 +5,8 @@
     </button>
     <h1>Freshbox</h1>
     <span class="spacer"></span>
-    <button mat-raised-button class="header-button"><mat-icon>person</mat-icon>Log in</button>
-    <button mat-raised-button class="header-button black-button">Sign up</button>
+    <button mat-raised-button class="header-button" (click)="login()"><mat-icon>person</mat-icon>Log in</button>
+    <button mat-raised-button class="header-button black-button" (click)="signup()">Sign up</button>
   </mat-toolbar>
 
   <div style="padding: 0 10%">
@@ -17,7 +17,7 @@
       <button mat-flat-button class="black-button delivery-address-action">Find food</button>
     </div>
 
-    <p><a routerLink="/login" class="link">Sign in</a> for your recent addresses</p>
+    <p><span style="cursor: pointer" class="link" (click)="login()">Sign in</span> for your recent addresses</p>
   </div>
 
   <span></span>

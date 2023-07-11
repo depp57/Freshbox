@@ -26,7 +26,11 @@
         "styles": [
           "apps/frontend/src/styles.scss"
         ],
-        "scripts": []
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "base64-js",
+          "js-sha256"
+        ]
       },
       "configurations": {
         "production": {

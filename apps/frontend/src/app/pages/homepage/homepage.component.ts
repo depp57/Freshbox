@@ -12,6 +12,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { AddressAutocompleteComponent } from '@shared/components/address-autocomplete/address-autocomplete.component';
 import { MatCardModule } from '@angular/material/card';
 import { MapService } from '@core/services/map.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'freshbox-homepage',
@@ -46,10 +47,20 @@ export default class HomepageComponent {
     { lat: 45.75, lng: 4.83 },
   ];
 
-  constructor(protected map: MapService) {}
+  constructor(protected map: MapService, private keycloak: KeycloakService) {}
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
     this.isScrolled = window.scrollY > 0;
+  }
+
+  async login(): Promise<void> {
+    await this.keycloak.login({
+      redirectUri: `${window.location.href}/authenticated`,
+    });
+  }
+
+  async signup(): Promise<void> {
+    await this.keycloak.register();
   }
 }
