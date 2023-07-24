@@ -28,7 +28,8 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "backend-order:build"
+        "buildTarget": "backend-order:build",
+        "inspect": false
       },
       "configurations": {
         "production": {
