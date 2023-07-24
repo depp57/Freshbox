@@ -1,1 +1,9 @@
 <p>authenticated works!</p>
+
+<ng-container *ngIf="(user | async) as profile">
+  <p *ngFor="let p of profile | keyvalue">
+    {{p.key}} : {{p.value | json}}
+  </p>
+</ng-container>
+
+<p>{{(adminOnly | async)?.message}}</p>
