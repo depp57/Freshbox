@@ -56,7 +56,7 @@ export default class HomepageComponent {
 
   async login(): Promise<void> {
     await this.keycloak.login({
-      redirectUri: `${window.location.href}/authenticated`,
+      redirectUri: `${window.location.href}authenticated`,
     });
   }
 

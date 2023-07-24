@@ -1,6 +1,10 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+  withJsonpSupport,
+} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   PreloadAllModules,
@@ -17,7 +21,7 @@ function initKeycloak(keycloak: KeycloakService): () => Promise<boolean> {
       config: {
         url: 'https://localhost:8443',
         realm: 'freshbox',
-        clientId: 'freshbox',
+        clientId: 'frontend',
       },
       initOptions: {
         onLoad: 'check-sso',
@@ -29,7 +33,7 @@ function initKeycloak(keycloak: KeycloakService): () => Promise<boolean> {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withJsonpSupport()),
+    provideHttpClient(withJsonpSupport(), withInterceptorsFromDi()),
     provideAnimations(),
     provideRouter(appRoutes, withPreloading(PreloadAllModules)),
     importProvidersFrom(KeycloakAngularModule),

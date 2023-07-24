@@ -10,5 +10,6 @@ export const appRoutes: Routes = [
     path: 'authenticated',
     loadComponent: () => import('./authenticated/authenticated.component'),
     canActivate: [AuthGuard],
+    data: { roles: ['admin'] },
   },
 ];
