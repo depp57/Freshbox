@@ -28,7 +28,8 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "backend-payment:build"
+        "buildTarget": "backend-payment:build",
+        "inspect": false
       },
       "configurations": {
         "production": {
