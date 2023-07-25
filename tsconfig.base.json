@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@freshbox/api-data": ["libs/api-data/src/index.ts"]
+      "@freshbox/api-dto": ["libs/api-dto/src/index.ts"],
+      "@freshbox/assets": ["libs/assets/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

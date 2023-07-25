@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/backend/order",
         "main": "apps/backend/order/src/main.ts",
         "tsConfig": "apps/backend/order/tsconfig.app.json",
-        "assets": ["apps/backend/order/src/assets"],
         "webpackConfig": "apps/backend/order/webpack.config.js",
         "generatePackageJson": true
       },

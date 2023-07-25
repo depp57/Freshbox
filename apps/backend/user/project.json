@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/backend/user",
         "main": "apps/backend/user/src/main.ts",
         "tsConfig": "apps/backend/user/tsconfig.app.json",
-        "assets": ["apps/backend/user/src/assets"],
         "webpackConfig": "apps/backend/user/webpack.config.js",
         "generatePackageJson": true
       },

@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/backend/restaurant",
         "main": "apps/backend/restaurant/src/main.ts",
         "tsConfig": "apps/backend/restaurant/tsconfig.app.json",
-        "assets": ["apps/backend/restaurant/src/assets"],
         "webpackConfig": "apps/backend/restaurant/webpack.config.js",
         "generatePackageJson": true
       },
