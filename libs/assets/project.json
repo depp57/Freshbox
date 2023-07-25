@@ -1,14 +1,14 @@
 {
-  "name": "api-data",
+  "name": "assets",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/api-data/src",
+  "sourceRoot": "libs/assets/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/api-data/**/*.ts"]
+        "lintFilePatterns": ["libs/assets/**/*.ts"]
       }
     }
   },

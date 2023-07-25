@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/backend/payment",
         "main": "apps/backend/payment/src/main.ts",
         "tsConfig": "apps/backend/payment/tsconfig.app.json",
-        "assets": ["apps/backend/payment/src/assets"],
         "webpackConfig": "apps/backend/payment/webpack.config.js",
         "generatePackageJson": true
       },
