@@ -9,7 +9,7 @@ export class AppController {
     if (user) {
       return user;
     } else {
-      return process.env;
+      return JSON.stringify(process.env);
     }
   }
 

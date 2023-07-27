@@ -5,4 +5,4 @@ import { KeycloakConfigService } from './keycloak-config.service';
   providers: [KeycloakConfigService],
   exports: [KeycloakConfigService],
 })
-export class ConfigModule {}
+export class KeycloakConfigModule {}

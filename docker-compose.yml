@@ -41,12 +41,12 @@ services:
       KC_DB_DATABASE: keycloak
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KC_DB_SCHEMA: public
-      KC_HOSTNAME_ADMIN_URL: https://localhost:8443
-      KC_HOSTNAME_URL: https://localhost:8443
+      KC_HOSTNAME_ADMIN_URL: ${BASE_URL}:8443
+      KC_HOSTNAME_URL: ${BASE_URL}:8443
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl-keys/freshbox.crt
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl-keys/freshbox.key
     healthcheck:
-      test: [ "CMD", "curl", "-f", "${BASE_URL}:8443" ]
+      test: [ "CMD", "curl", "-f","-k", "${BASE_URL}:8443" ]
       interval: 1m
       timeout: 5s
       start_period: 30s
@@ -64,7 +64,7 @@ services:
       - "80:80"
       - "443:443"
     healthcheck:
-      test: ["CMD", "curl", "-f", "${BASE_URL}:80"]
+      test: ["CMD", "curl", "-f", "-k", "${BASE_URL}"]
       interval: 1m
       timeout: 5s
       start_period: 10s
