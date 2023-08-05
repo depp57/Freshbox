@@ -1,0 +1,374 @@
+openapi: 3.0.3
+
+
+info:
+  title: Freshbox
+  description: Complete specification of Freshbox API, including its four microservices.
+  version: 0.0.1
+
+
+servers:
+  - url: https://api.localhost
+    description: Development environment
+  - url: https://freshbox.sachathommet.fr
+    description: Production environment
+
+tags:
+  - name: auth
+    description: Authentication and authorization are covered by Keycloak
+
+  - name: order
+    description: Operations about orders
+
+  - name: payment
+    description: Operations about payments
+
+  - name: restaurant
+    description: Operations about the restaurants
+
+  - name: user
+    description: Operations about users
+
+
+paths:
+  /user/{uuid}:
+    get:
+      summary: Get a user
+      description: A normal user can only get his own account.
+                   Users with ADMIN role can get all accounts
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: The uuid of the user to get
+      tags:
+        - user
+      responses:
+        200:
+          description: The user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Invalid credentials
+        403:
+          description: Forbidden
+
+    post:
+      summary: Create a new user
+      description: A normal user can only create his own account after a successful authentication in Keycloak 
+                   Users with ADMIN role can create all accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: User uuid
+              type: object
+              properties:
+                uuid:
+                  type: string
+      tags:
+        - user
+      responses:
+        201:
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Invalid credentials
+        403:
+          description: Forbidden
+
+    patch:
+      summary: Update a user
+      description: A normal user can only update his own account.
+                   Users with ADMIN role can update all accounts
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: The uuid of the user to update
+      tags:
+        - user
+      responses:
+        200:
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Invalid credentials
+        403:
+          description: Forbidden
+
+    delete:
+      summary: Delete a user by uuid
+      description: A normal user can only delete his own account.
+                   Users with ADMIN role can delete all accounts
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: The uuid of the user to delete
+      tags:
+        - user
+      responses:
+        204:
+          description: User deleted
+        401:
+          description: Invalid credentials
+        403:
+          description: Forbidden
+
+  /orders:
+    get:
+      tags:
+        - orders
+      summary: Get all orders
+      parameters:
+        - in: query
+          name: user
+          schema:
+            type: integer
+          description: Filter by user id
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/OrderStatus'
+        - in: query
+          name: city
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+  
+    post:
+      tags:
+        - orders
+      summary: Place an order
+      responses:
+        '201':
+          description: Successful operation
+  
+  /orders/{orderId}:
+    patch:
+      tags:
+        - orders
+      summary: Update an order - espacially useful to change its status
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          description: The id of the order to update
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+        
+  
+  /payment:
+    post:
+      tags:
+        - payment
+      summary: Checkout an order
+      responses:
+        '200':
+          description: Successful operation
+  
+  /restaurants:
+    get:
+      tags:
+        - inventory
+      summary: Get all restaurants
+      parameters:
+        - in: query
+          name: owner
+          schema:
+            type: integer
+          description: Filter by owner id
+        - in: query
+          name: city
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+    
+    post:
+      tags:
+        - inventory
+      summary: Create a restaurant
+      responses:
+        '200':
+          description: Successful operation
+  
+  /restaurants/{restaurantId}:
+    patch:
+      tags:
+        - inventory
+      summary: Update a restaurant
+      parameters:
+        - in: path
+          name: restaurantId
+          required: true
+          description: The id of the restaurant to update
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          
+    delete:
+      tags:
+        - inventory
+      summary: Delete a restaurant
+      parameters:
+        - in: path
+          name: restaurantId
+          required: true
+          description: The id of the restaurant to delete
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+        
+  /articles:
+    get:
+      tags:
+        - inventory
+      summary: Get all articles
+      parameters:
+        - in: query
+          name: restaurant
+          schema:
+            type: integer
+          description: Filter by restaurant id
+      responses:
+        '200':
+          description: Successful operation
+    
+    post:
+      tags:
+        - inventory
+      summary: Create an article
+      parameters:
+        - in: query
+          name: restaurant
+          required: true
+          schema:
+            type: integer
+          description: Filter by restaurant id
+      responses:
+        '200':
+          description: Successful operation
+  
+  /articles/{articleId}:
+    patch:
+      tags:
+        - inventory
+      summary: Update an article
+      parameters:
+        - in: path
+          name: articleId
+          required: true
+          description: The id of the article to update
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+    delete:
+      tags:
+        - inventory
+      summary: Delete an article
+      parameters:
+        - in: path
+          name: articleId
+          required: true
+          description: The id of the article to delete
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          
+components:
+  schemas:
+    User:
+      type: object
+      required: uuid
+      properties:
+        uuid:
+          type: string
+          example: 3956cc14-b6ba-4b3c-a2a8-6c3b033d4cc1
+        phone:
+          type: string
+          example: 0655555555
+        address:
+          $ref: '#/components/schemas/Address'
+        type:
+          $ref: '#/components/schemas/UserType'
+
+    UserType:
+      type: string
+      enum:
+        - customer
+        - restaurant
+        - delivery
+        - sales
+        - admin
+
+    Address:
+      type: object
+      properties:
+        zipcode:
+          type: string
+          example: 31500
+        street:
+          type: string
+          example: 1 rue Jean
+        city:
+          type: string
+          example: Toulouse
+        country:
+          type: string
+          example: France
+
+    OrderStatus:
+      type: string
+      enum:
+        - canceled    # canceled                    - the customer can only cancel orders in status 'placed'
+        - placed      # placed by the customer      - the restaurant can now view it & the customer can still update it
+        - approved    # approved by the restaurant  - delivery persons can now view it
+        - delivering  # currently being delivered
+        - delivered   # successfully delivered
