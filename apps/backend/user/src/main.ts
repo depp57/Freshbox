@@ -1,9 +1,9 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { AppModule } from './app.module';
 
 const setupSwagger = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()
@@ -21,6 +21,7 @@ const setupSwagger = (app: INestApplication) => {
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
+    logger: ['log', 'warn', 'error'],
   });
 
   app.disable('x-powered-by'); // don't expose the backend server for security reason

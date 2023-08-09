@@ -21,6 +21,7 @@ const setupSwagger = (app: INestApplication) => {
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
+    logger: ['log', 'warn', 'error'],
   });
 
   app.disable('x-powered-by'); // don't expose the backend server for security reason
