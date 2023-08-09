@@ -3,7 +3,7 @@
 
 # No need for "multi-stage build" because the "npx nx docker-build app" command already builds the application
 # and places the build in dist/apps/backend/app
-FROM node:18-alpine
+FROM node:20-alpine3.18
 
 ENV PORT=3000
 ENV NODE_ENV production
@@ -15,6 +15,6 @@ USER node
 
 COPY --chown=node:node dist/apps/backend/user backend-user
 
-RUN npm --prefix backend-user --omit=dev ci
+RUN npm --prefix backend-user --omit=dev i
 
 CMD [ "node", "backend-user/main.js" ]
