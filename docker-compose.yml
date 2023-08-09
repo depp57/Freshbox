@@ -3,6 +3,7 @@ version: "3.8"
 services:
   auth-database:
     image: postgres:15.3-alpine3.18
+    restart: unless-stopped
     volumes:
       - auth_database:/var/lib/postgresql/data
     networks:
@@ -13,8 +14,8 @@ services:
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 1m
-      timeout: 5s
+      interval: 30s
+      timeout: 2s
       start_period: 30s
 
   auth:
@@ -47,8 +48,8 @@ services:
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl-keys/freshbox.key
     healthcheck:
       test: [ "CMD", "curl", "-f","-k", "${BASE_URL}:8443" ]
-      interval: 1m
-      timeout: 5s
+      interval: 30s
+      timeout: 2s
       start_period: 30s
 
 
@@ -65,8 +66,8 @@ services:
       - "443:443"
     healthcheck:
       test: ["CMD", "curl", "-f", "-k", "${BASE_URL}"]
-      interval: 1m
-      timeout: 5s
+      interval: 30s
+      timeout: 2s
       start_period: 10s
 
 
@@ -81,6 +82,41 @@ services:
     restart: unless-stopped
     networks:
       - api-gateway
+      - api-user-internal
+    depends_on:
+      api-user-db:
+        condition: service_healthy
+    environment:
+      DB_HOST: api-user-db
+      DB_PORT: 5432
+      DB_USERNAME: internal
+      DB_PASSWORD: ${API_USER_DB_PASSWORD}
+      DB_NAME: user
+
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 2s
+      start_period: 5s
+
+  api-user-db:
+    image: postgres:15.3-alpine3.18
+    restart: unless-stopped
+    volumes:
+      - user_database:/var/lib/postgresql/data
+    networks:
+      - api-user-internal
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: internal
+      POSTGRES_PASSWORD: ${API_USER_DB_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 30s
+      timeout: 2s
+      start_period: 15s
+    ports:
+      - "5432:5432"
 
   api-restaurant:
     image: api-restaurant
@@ -97,9 +133,13 @@ services:
 volumes:
   keycloak_conf:
   auth_database:
+  user_database:
 
 networks:
   api-gateway:
     driver: "bridge"
   keycloak:
     driver: "bridge"
+  api-user-internal:
+    driver: "bridge"
+    internal: false

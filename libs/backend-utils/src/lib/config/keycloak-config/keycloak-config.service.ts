@@ -1,4 +1,4 @@
-import { Injectable, LogLevel } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   KeycloakConnectOptions,
   KeycloakConnectOptionsFactory,
@@ -8,11 +8,8 @@ import {
 @Injectable()
 export class KeycloakConfigService implements KeycloakConnectOptionsFactory {
   createKeycloakConnectOptions(): KeycloakConnectOptions {
-    let logLevels: LogLevel[] = ['log'];
-
     if (process.env['NODE_ENV'] === 'development') {
       process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-      logLevels = ['log', 'warn', 'debug', 'error'];
     }
 
     return {
@@ -21,7 +18,6 @@ export class KeycloakConfigService implements KeycloakConnectOptionsFactory {
       clientId: 'backend',
       secret: 'zakFDioxKRHu3hvDTCNfPaEauWbfvgEP',
       cookieKey: 'KEYCLOAK_JWT',
-      logLevels,
       useNestLogger: true,
       tokenValidation: TokenValidation.OFFLINE,
     };
