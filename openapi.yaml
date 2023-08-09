@@ -336,17 +336,6 @@ components:
           example: 0655555555
         address:
           $ref: '#/components/schemas/Address'
-        type:
-          $ref: '#/components/schemas/UserType'
-
-    UserType:
-      type: string
-      enum:
-        - customer
-        - restaurant
-        - delivery
-        - sales
-        - admin
 
     Address:
       type: object
