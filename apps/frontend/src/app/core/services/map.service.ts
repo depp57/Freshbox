@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, shareReplay, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '@env/environment.development';
+import { env } from '@env/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +10,11 @@ export class MapService {
   isApiLoaded$: Observable<boolean>;
   placeSubject: Subject<google.maps.places.PlaceResult>;
 
-  private static readonly API_KEY = environment.GOOGLE_MAP_API_KEY;
+  private static readonly API_KEY = env.GOOGLE_MAP_API_KEY;
 
   constructor(private httpClient: HttpClient) {
     this.placeSubject = new Subject<google.maps.places.PlaceResult>();
-    this.isApiLoaded$ = httpClient
+    this.isApiLoaded$ = this.httpClient
       .jsonp(
         `https://maps.googleapis.com/maps/api/js?libraries=places&key=${MapService.API_KEY}`,
         'callback'
