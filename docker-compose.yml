@@ -76,6 +76,12 @@ services:
     restart: unless-stopped
     networks:
       - api-gateway
+    environment:
+      SSL_CERT_PATH: /etc/ssl/certs/freshbox.crt
+      SSL_KEY_PATH: /etc/ssl/private/freshbox.key
+    volumes:
+      - ./infra/ssl-keys/freshbox.crt:/etc/ssl/certs/freshbox.crt
+      - ./infra/ssl-keys/freshbox.key:/etc/ssl/private/freshbox.key
 
   api-user:
     image: api-user
@@ -92,9 +98,13 @@ services:
       DB_USERNAME: internal
       DB_PASSWORD: ${API_USER_DB_PASSWORD}
       DB_NAME: user
-
+      SSL_CERT_PATH: /etc/ssl/certs/freshbox.crt
+      SSL_KEY_PATH: /etc/ssl/private/freshbox.key
+    volumes:
+      - ./infra/ssl-keys/freshbox.crt:/etc/ssl/certs/freshbox.crt
+      - ./infra/ssl-keys/freshbox.key:/etc/ssl/private/freshbox.key
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      test: ["CMD", "wget", "-q", "--spider", "--no-check-certificate", "https://localhost:3000/health"]
       interval: 30s
       timeout: 2s
       start_period: 5s
@@ -111,24 +121,34 @@ services:
       POSTGRES_USER: internal
       POSTGRES_PASSWORD: ${API_USER_DB_PASSWORD}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -U internal -d user" ]
       interval: 30s
       timeout: 2s
       start_period: 15s
-    ports:
-      - "5432:5432"
 
   api-restaurant:
     image: api-restaurant
     restart: unless-stopped
     networks:
       - api-gateway
+    environment:
+      SSL_CERT_PATH: /etc/ssl/certs/freshbox.crt
+      SSL_KEY_PATH: /etc/ssl/private/freshbox.key
+    volumes:
+      - ./infra/ssl-keys/freshbox.crt:/etc/ssl/certs/freshbox.crt
+      - ./infra/ssl-keys/freshbox.key:/etc/ssl/private/freshbox.key
 
   api-order:
     image: api-order
     restart: unless-stopped
     networks:
       - api-gateway
+    environment:
+      SSL_CERT_PATH: /etc/ssl/certs/freshbox.crt
+      SSL_KEY_PATH: /etc/ssl/private/freshbox.key
+    volumes:
+      - ./infra/ssl-keys/freshbox.crt:/etc/ssl/certs/freshbox.crt
+      - ./infra/ssl-keys/freshbox.key:/etc/ssl/private/freshbox.key
 
 volumes:
   keycloak_conf:
@@ -142,4 +162,4 @@ networks:
     driver: "bridge"
   api-user-internal:
     driver: "bridge"
-    internal: false
+    internal: true

@@ -34,7 +34,13 @@
               "maximumError": "4kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/frontend/src/environments/environment.development.ts",
+              "with": "apps/frontend/src/environments/environment.production.ts"
+            }
+          ]
         },
         "development": {
           "buildOptimizer": false,
@@ -42,19 +48,18 @@
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/frontend/src/environments/environment.production.ts",
-              "with": "apps/frontend/src/environments/environment.development.ts"
-            }
-          ]
+          "namedChunks": true
         }
       },
       "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "ssl": true,
+        "sslKey": "/home/sacha/WebstormProjects/Freshbox/infra/ssl-keys/freshbox.key",
+        "sslCert": "/home/sacha/WebstormProjects/Freshbox/infra/ssl-keys/freshbox.crt"
+      },
       "configurations": {
         "production": {
           "browserTarget": "frontend:build:production"
