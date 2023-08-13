@@ -50,75 +50,61 @@ describe('Users', () => {
     return supertest(app.getHttpServer()).get('/health').expect(200);
   });
 
-  it('GET /* - anonymous user should not be able to access any endpoint apart from healthcheck', () => {
+  it('GET /* - anonymous user should not be able to access any endpoint apart from healthcheck', async () => {
     const endpoints = getAllEndpoints(app);
     const httpServer = app.getHttpServer();
-    const testRequests = [];
 
-    endpoints.forEach((endpoint) => {
+    for (const endpoint of endpoints) {
       switch (endpoint.method) {
         case 'get':
-          testRequests.push(supertest(httpServer).get(endpoint.path).expect(401));
+          await supertest(httpServer).get(endpoint.path).expect(401);
           break;
         case 'post':
-          testRequests.push(supertest(httpServer).post(endpoint.path).expect(401));
+          await supertest(httpServer).post(endpoint.path).expect(401);
           break;
         case 'patch':
-          testRequests.push(supertest(httpServer).patch(endpoint.path).expect(401));
+          await supertest(httpServer).patch(endpoint.path).expect(401);
           break;
         case 'delete':
-          testRequests.push(supertest(httpServer).delete(endpoint.path).expect(401));
+          await supertest(httpServer).delete(endpoint.path).expect(401);
           break;
       }
-    });
-
-    return Promise.all(testRequests);
+    }
   });
 
-  it('GET /* - admin user should be able to access any endpoint', () => {
+  it('GET /* - admin user should be able to access any endpoint', async () => {
     const endpoints = getAllEndpoints(app);
     const httpServer = app.getHttpServer();
-    const testRequests = [];
     const hasAccess = (res: supertest.Response) => res.status !== 401 && res.status !== 403;
 
-    endpoints.forEach((endpoint) => {
+    for (const endpoint of endpoints) {
       switch (endpoint.method) {
         case 'get':
-          testRequests.push(
-            supertest(httpServer)
-              .get(endpoint.path)
-              .auth(ADMIN_TOKEN, { type: 'bearer' })
-              .expect(hasAccess)
-          );
+          await supertest(httpServer)
+            .get(endpoint.path)
+            .auth(ADMIN_TOKEN, { type: 'bearer' })
+            .expect(hasAccess);
           break;
         case 'post':
-          testRequests.push(
-            supertest(httpServer)
-              .post(endpoint.path)
-              .auth(ADMIN_TOKEN, { type: 'bearer' })
-              .expect(hasAccess)
-          );
+          await supertest(httpServer)
+            .post(endpoint.path)
+            .auth(ADMIN_TOKEN, { type: 'bearer' })
+            .expect(hasAccess);
           break;
         case 'patch':
-          testRequests.push(
-            supertest(httpServer)
-              .patch(endpoint.path)
-              .auth(ADMIN_TOKEN, { type: 'bearer' })
-              .expect(hasAccess)
-          );
+          await supertest(httpServer)
+            .patch(endpoint.path)
+            .auth(ADMIN_TOKEN, { type: 'bearer' })
+            .expect(hasAccess);
           break;
         case 'delete':
-          testRequests.push(
-            supertest(httpServer)
-              .delete(endpoint.path)
-              .auth(ADMIN_TOKEN, { type: 'bearer' })
-              .expect(hasAccess)
-          );
+          await supertest(httpServer)
+            .delete(endpoint.path)
+            .auth(ADMIN_TOKEN, { type: 'bearer' })
+            .expect(hasAccess);
           break;
       }
-    });
-
-    return Promise.all(testRequests);
+    }
   });
 
   it("GET / - non-admin user can't list all users", () => {
