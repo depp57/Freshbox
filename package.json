@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "lint": "nx run-many --all --target=lint"
+    "lint": "nx run-many --all --target=lint --parallel=8",
+    "build-images": "nx run-many --all --target=docker-build --parallel=8",
+    "test": "jest",
+    "test-ci": "nx affected -t test --parallel=8 -- --runInBand",
+    "test-coverage": "jest --coverage"
   },
   "private": true,
   "dependencies": {
