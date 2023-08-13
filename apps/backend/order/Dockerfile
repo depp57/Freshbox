@@ -8,13 +8,13 @@ FROM node:20-alpine3.18
 ENV PORT=3000
 ENV NODE_ENV production
 
-WORKDIR /app
-
 # more security, run as the node user (created by the base node image) rather than the root user
 USER node
 
-COPY --chown=node:node dist/apps/backend/order backend-order
+COPY --chown=node:node dist/apps/backend/order /app
 
-RUN npm --prefix backend-order --omit=dev i
+WORKDIR /app
 
-CMD [ "node", "backend-order/main.js" ]
+RUN npm --omit=dev i && rm package*.json
+
+CMD [ "node", "main.js" ]
