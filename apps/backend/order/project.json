@@ -16,6 +16,7 @@
         "webpackConfig": "apps/backend/order/webpack.config.js",
         "generatePackageJson": true
       },
+      "defaultConfiguration": "production",
       "configurations": {
         "production": {
           "optimization": true,
