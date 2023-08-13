@@ -1,19 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-  withJsonpSupport,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withJsonpSupport } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import {
-  PreloadAllModules,
-  provideRouter,
-  withPreloading,
-} from '@angular/router';
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import { appRoutes } from './app/pages/routes';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
+import { env } from '@env/environment.development';
 
 function initKeycloak(keycloak: KeycloakService): () => Promise<boolean> {
   return () =>
@@ -21,12 +14,11 @@ function initKeycloak(keycloak: KeycloakService): () => Promise<boolean> {
       config: {
         url: 'https://localhost:8443',
         realm: 'freshbox',
-        clientId: 'frontend',
+        clientId: env.KEYCLOAK_CLIENT,
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
       },
     });
 }
