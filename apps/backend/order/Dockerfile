@@ -15,6 +15,6 @@ COPY --chown=node:node dist/apps/backend/order /app
 
 WORKDIR /app
 
-RUN npm --omit=dev i && rm package*.json
+RUN npm --omit=dev i && rm package*.json && npm cache clean --force
 
 CMD [ "node", "main.js" ]
