@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/depp57/freshbox">
-    <img src="./freshbox-logo-vertical.png" alt="Logo" width="150" height="131">
+    <img src="docs/freshbox-logo-vertical.png" alt="Logo" width="150" height="131">
   </a>
 
 <h3 align="center">Freshbox</h3>
@@ -67,7 +67,7 @@ I implemented SSL/TLS encryption between the client and the API gateway, and bet
 network.
 I opted for an SSL/TLS certificate signed by [LetsEncrypt](https://letsencrypt.org) - a trusted *Certificate Authority*.
 
-![architecture_v0.1.png](architecture_v0.1.png)
+![architecture_v0.1.png](docs/architecture_v0.1.png)
 
 *NB*: you can use a tool like [Certbot](https://certbot.eff.org/) to automatically renew your certificate.
 
@@ -88,22 +88,30 @@ flowchart LR
 ```
 <div align="center"><i>Certificate chain, in this case the root certificate belongs to LetsEncrypt</i></div>
 
-```mermaid
-sequenceDiagram
-    web browser->>web server: Browser connects to a server secured with https
-    web server->>web browser: Server send a copy of its SSL/TLS certificate.
-    web browser->>web browser: Browser checks the certificate validity (root CA, expiration date, FQDN, ect.)
-    web browser->>web server: If OK, it creates + encrypt a symmetric session key with the server's public key
-    web server->>web browser: Server decrypt the session key using its private key + acknowledge the session
-    web server->web browser: Encrypted data exchange using the symmetric session key 
-```
+![mermaid-diagram-2023-08-15-160103.svg](docs/https_session.svg)
+
 <div align="center"><i>An HTTPS session</i></div>
 
 </details>
 
 #### 2. Keycloak authentication and authorization
 
-TODO + NB: sso and AD integration
+Keycloak, an open-source tool backed by RedHat, is used in this project to manage the authentication and authorization process.
+It is widely recognized and known for implementing standard security protocols, like OpenID in the case of Freshbox.
+
+It comes with a lot of advantages:
+- **Role-Based Access Control (RBAC)**: a method of regulating access to resources based on the roles of individual users within the project.
+- **Single Sign-On (SSO)**: a property that allows users to log in with a single ID and password to gain access to a connected system.
+- **Social Logins**: offers users the ability to authenticate using social networks. For instance, Freshbox users can conveniently log in using Google.
+- **User Federation**: capability to connect with existing LDAP or Active Directory servers.
+- **User-Friendly Admin Dashboard**: provides an interface for managing users, roles, and permissions.
+
+Here is an illustration summarizing the integration of Keycloak into Freshbox:
+
+![keycloak_integration.svg](docs%2Fkeycloak_integration.svg)
+
+As explained in the illustration: I opted for offline token validation. While this choice restricts token revocation,
+it eases the network load by allowing all microservices to validate tokens locally, eliminating the need for calls to Keycloak.
 
 ---
 
@@ -205,7 +213,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[product-screenshot]: trello.png
+[product-screenshot]: docs/trello.png
 [product-url]: https://freshbox.sachathommet.fr
 [Linkedin]: https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=LinkedIn&logoColor=white
 [Linkedin-url]: https://fr.linkedin.com/in/sacha-thommet
