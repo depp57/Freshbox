@@ -15,10 +15,17 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/frontend/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/frontend/src/favicon.ico", "apps/frontend/src/assets"],
+        "assets": [
+          "apps/frontend/src/favicon.ico",
+          "apps/frontend/src/assets",
+          "apps/frontend/src/manifest.webmanifest",
+          "apps/frontend/src/robots.txt"
+        ],
         "styles": ["apps/frontend/src/styles.scss"],
         "scripts": [],
-        "allowedCommonJsDependencies": ["base64-js", "js-sha256"]
+        "allowedCommonJsDependencies": ["base64-js", "js-sha256"],
+        "serviceWorker": true,
+        "ngswConfigPath": "apps/frontend/ngsw-config.json"
       },
       "configurations": {
         "production": {
