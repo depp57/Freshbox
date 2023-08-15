@@ -61,15 +61,51 @@ I explained my choices whenever I thought it is interesting.
 
 ### Security
 
-#### 1. SSL encryption using HTTPS between the client and the API-gateway
+#### 1. Secure Communication with HTTPS and SSL Encryption
 
-HTTPS is crucial for secure communication between clients and web apps. The main advantages it procures is **encryption of the data transmitted between the client's web browser
-and the web app** and **authentication of the identity of the web app server**.
+I implemented SSL/TLS encryption between the client and the API gateway, and between all microservices inside the Docker's
+network.
+I opted for an SSL/TLS certificate signed by [LetsEncrypt](https://letsencrypt.org) - a trusted *Certificate Authority*.
 
-I opted for a [self-signed SSL certificate](https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl)
-to encrypt the communication between the web application and the user. However, it's important to note that **self-signed certificates are not suitable
-for production environments**. To enhance security, I recommend using a trusted SSL certificate from a certificate authority like [Let's Encrypt](https://letsencrypt.org/),
-which offers free certificates. Then, you can use a tool like [Certbot](https://certbot.eff.org/) to automatically renew your certificate.
+![architecture_v0.1.png](architecture_v0.1.png)
+
+*NB*: you can use a tool like [Certbot](https://certbot.eff.org/) to automatically renew your certificate.
+
+<details>
+  <summary>My Explanation of how HTTPS works</summary>
+
+1. Request a certificate
+   1. Create a Certificate Signing Request (CSR) with your company information (FQDN, email, name, ect.).
+   2. Send it to the Certificate Authority (CA).
+   3. The CA will perform a DNS challenge (usually check if a TXT record exists), to ensure the provided FQDN belongs to you.
+   4. If the challenge succeed, the CA send you back your certificate signed by the CA's root certificate.
+
+2. Serve the certificate
+
+```mermaid
+flowchart LR
+    root_certificate -- sign --> intermediate_certificate -- sign --> server_certificate
+```
+<div align="center"><i>Certificate chain, in this case the root certificate belongs to LetsEncrypt</i></div>
+
+```mermaid
+sequenceDiagram
+    web browser->>web server: Browser connects to a server secured with https
+    web server->>web browser: Server send a copy of its SSL/TLS certificate.
+    web browser->>web browser: Browser checks the certificate validity (root CA, expiration date, FQDN, ect.)
+    web browser->>web server: If OK, it creates + encrypt a symmetric session key with the server's public key
+    web server->>web browser: Server decrypt the session key using its private key + acknowledge the session
+    web server->web browser: Encrypted data exchange using the symmetric session key 
+```
+<div align="center"><i>An HTTPS session</i></div>
+
+</details>
+
+#### 2. Keycloak authentication and authorization
+
+TODO + NB: sso and AD integration
+
+---
 
 ### Clean code
 
